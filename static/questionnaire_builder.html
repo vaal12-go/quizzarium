@@ -1,0 +1,117 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="/img/notebook_question_mark_filled_icon_202052.ico"
+    />
+    <title>Quizzarium - edit question</title>
+    <link href="/css/bootstrap.min_5.0.2.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css"
+    />
+
+    <link rel="stylesheet" href="css/questionnaire_builder.css" />
+
+    <!-- BS5Dialog related JS and CSS -->
+    <link
+      rel="stylesheet"
+      href="https://ymlluo.github.io/bs5dialog/dist/bs5dialog.css"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/gh/ymlluo/bs5dialog@master/dist/bs5dialog.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Dialog help:
+     https://ymlluo.github.io/bs5dialog/docs/alert.html
+     -->
+    <!-- END BS5Dialog related JS and CSS -->
+
+    <script src="js/bootstrap.bundle.min_5.0.2.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+
+    <script src="/js/mustache_4.2.0.js"></script>
+
+    <script src="js/common.js"></script>
+
+    <script src="/js/qb_question_templates.js"></script>
+    <script src="/js/qb_questions_management.js"></script>
+    <script src="/js/qb_quiz_save.js"></script>
+    <script src="/js/questionnaire_builder.js"></script>
+  </head>
+  <body>
+    <!-- Quiz name and description container -->
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h3>Questionnaire</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col"></div>
+        <div class="mb-3">
+          <label for="quiz_name_inp" class="form-label">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="quiz_name_inp"
+            placeholder="Name of questionnaire"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="quiz_descr_inp" class="form-label">Description</label>
+          <textarea
+            class="form-control"
+            id="quiz_descr_inp"
+            rows="3"
+            placeholder="Enter some description"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+    <!-- END Quiz name and description container -->
+
+    <!-- Questions container -->
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          Questions
+          <ul id="question-holder-list">
+            <!-- Extended question container see file extended_question_container_temp_templ.html for content-->
+            <!-- <li class="ui-state-default">
+            </li> -->
+            <!-- END  Extended question container -->
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- END Questions container -->
+
+    <!-- Buttons container -->
+    <div class="container">
+      <div class="row mb-3">
+        <div class="col text-center">
+          <button id="add-question-btn" type="button" class="btn btn-primary">
+            Add question
+          </button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-center">
+          <button type="button" class="btn btn-primary" id="save-quiz-button">
+            Save
+          </button>
+          <button id="cancel-btn" type="button" class="btn btn-primary">
+            Cancel (return to list)
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- END Buttons container -->
+  </body>
+</html>

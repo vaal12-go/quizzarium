@@ -2,21 +2,120 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document232</title>
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="/img/notebook_question_mark_filled_icon_202052.ico"
+    />
+    <title>Quizzarium quiz list v.21Mar2025</title>
     <link href="/css/bootstrap.min_5.0.2.css" rel="stylesheet" />
+    <link href="/css/index.css" rel="stylesheet" />
+
+    <link
+      href="https://cdn.jsdelivr.net/gh/ymlluo/bs5dialog@master/dist/bs5dialog.css"
+      rel="stylesheet"
+      crossorigin="anonymous"
+    />
 
     <script src="js/bootstrap.bundle.min_5.0.2.js"></script>
+
+    <script src="/js/mustache_4.2.0.js"></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/gh/ymlluo/bs5dialog@master/dist/bs5dialog.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Dialog help:
+     https://ymlluo.github.io/bs5dialog/docs/alert.html
+     -->
+
+    <script src="js/common.js"></script>
+    <script src="js/idx_templates.js"></script>
+    <script src="js/index.js"></script>
   </head>
   <body>
+    <!-- NAVIGATION -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <img
+            src="img/notebook_question_mark_filled_icon_202052.svg "
+            height="40px"
+          />Quiz list</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a href="questionnaire_builder.html">Create new quiz </a>
+            </li>
+
+            <!--<li class="nav-item">
+              <a class="nav-link active" href="tags_list.html">Menu2</a>
+            </li> -->
+          </ul>
+          <div>
+            <div>
+              <span class="navbar-text"> version:0.1 22Mar2025 </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- NAVIGATION END -->
+
     <!-- Main container -->
     <div class="container">
       <div class="row">
-        <div class="col-1">qwe1</div>
-        <div class="col-1">qwe2</div>
+        <div class="col-2 m-3"></div>
+        <div class="col-4 text-center">
+          <div class="input-group m-3">
+            <span class="input-group-text" id="basic-addon1">Sort</span>
+            <select
+              id="sort-selector"
+              class="form-select"
+              aria-label="Default select example"
+            >
+              <option value="1" selected>Name A..Z</option>
+              <option value="2">Name Z..A</option>
+              <option value="3">No of questions 0..10</option>
+              <option value="4">No of questions 10..0</option>
+              <option value="5">No of completions 0..10</option>
+              <option value="6">No of completions 10..0</option>
+            </select>
+          </div>
+        </div>
       </div>
+      <!-- Quizzes row -->
+      <div class="row">
+        <div class="col text-center">
+          <div id="quizzes-holder">
+            <div class="border text-start">
+              <h3>Item name</h3>
+              Item description
+              <a href="questionnaire_builder.html?id=1">Edit</a>
+              <a href="#" onclick="delete_item_click(this)">Delete</a>
+              <a href="#">Run</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- END Quizzes row -->
 
       <div class="row">
-        <div class="col-1 text-center">Pagination</div>
+        <div class="col text-center">
+          <span id="pagination-span">qwe1</span>
+        </div>
       </div>
     </div>
     <!-- END Main container -->

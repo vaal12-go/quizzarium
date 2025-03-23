@@ -1,0 +1,125 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <link href="/css/quiz_run.css" rel="stylesheet" />
+
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="/img/notebook_question_mark_filled_icon_202052.ico"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- BS5Dialog related JS and CSS -->
+    <link
+      rel="stylesheet"
+      href="https://ymlluo.github.io/bs5dialog/dist/bs5dialog.css"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/gh/ymlluo/bs5dialog@master/dist/bs5dialog.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Dialog help:
+     https://ymlluo.github.io/bs5dialog/docs/alert.html
+     -->
+    <!-- END BS5Dialog related JS and CSS -->
+
+    <!-- Bootstrap related local imports -->
+    <link href="../css/bootstrap.min_5.0.2.css" rel="stylesheet" />
+    <script src="../js/bootstrap.bundle.min_5.0.2.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
+
+    <script src="/js/mustache_4.2.0.js"></script>
+
+    <script src="/js/common.js"></script>
+    <script src="/js/quiz_run.js"></script>
+
+    <title>Quiz run</title>
+  </head>
+
+  <body>
+    <!-- TODO: update to 5.3 -->
+    <!-- NAVIGATION -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">
+          <img
+            src="img/notebook_question_mark_filled_icon_202052.svg "
+            height="40px"
+          />Quiz run</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li
+              class="nav-item border p-2"
+              style="
+                background-color: bisque;
+                width: 300px;
+                text-align: center;
+                font-family: monospace;
+              "
+            >
+              <span class="navbar-text"
+                ><h4>
+                  Time running:
+                  <span id="time-running-sec-span">0</span> sec
+                </h4></span
+              >
+            </li>
+            <!--<li class="nav-item">
+              <a class="nav-link active" href="tags_list.html">Menu2</a>
+            </li> -->
+          </ul>
+          <div>
+            <div>Quiz started:</div>
+            <span id="time-started-span">12:12:12</span>
+            <div>
+              <span class="navbar-text"> version:0.1 22Mar2025 </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- NAVIGATION END -->
+
+    <!-- MAIN container -->
+    <div class="container text-center">
+      <div class="row">
+        <div class="col">
+          <h1 id="quiz_name_holder">Quiz to be completed</h1>
+          <span id="quiz_description_holder"></span>
+        </div>
+      </div>
+
+      <!-- Questions holder container -->
+      <div class="row">
+        <div id="questions-holder" class="col"></div>
+      </div>
+      <!-- END  Questions holder container -->
+
+      <!-- Buttons row -->
+      <div class="row text-center">
+        <div class="col-3 m-3">
+          <button type="button" class="btn btn-primary" id="save-quiz-button">
+            Save
+          </button>
+        </div>
+      </div>
+      <!-- ENDButtons row -->
+    </div>
+    <!-- END MAIN container -->
+  </body>
+</html>

@@ -1,0 +1,65 @@
+<!-- question template -->
+<div class="container">
+  <div class="row pb-2 align-items-end">
+    <div class="col-7">
+      <span id="q1-qustion-number-span">2</span>.
+      <!-- TODO: add ids and update label 'for' attribute to match questions -->
+      <label for="q1-question_text_inp" class="form-label">Question</label>
+      <input
+        type="text"
+        class="form-control"
+        id="q1-question_text_inp"
+        placeholder="question"
+      />
+    </div>
+    <div class="col-3">
+      <label for="q1-question-type" class="form-label">Type</label>
+      <select class="form-select" id="q1-question-type">
+        <option selected>Not selected</option>
+        <option value="1">Text</option>
+        <option value="2">Single choice</option>
+        <option value="3">Multiple choice</option>
+        <option value="3">Image</option>
+      </select>
+    </div>
+    <div class="col-1">
+      <button
+        id="q1-remove-question-btn"
+        type="button"
+        class="btn btn-secondary"
+      >
+        Remove
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Choice answers -->
+<div id="q_new-choice-container" class="container">
+  <div class="row">
+    <div class="col-3">Answers</div>
+  </div>
+  <div class="row ms-4 mb-3 align-items-end">
+    <div class="col-9">
+      <span>1.</span>
+      <label for="exampleFormControlInput1" class="form-label">Choice</label>
+      <input
+        type="text"
+        class="form-control"
+        id="exampleFormControlInput1"
+        placeholder="choice"
+        id="q_new-ch_new-choice-inp"
+      />
+    </div>
+    <div class="col-3 no-display">
+      <button type="button" class="btn btn-secondary">Remove</button>
+    </div>
+  </div>
+  <div class="row ms-4 mb-3 align-items-end">
+    <div class="col-9">
+      <button type="button" class="btn btn-secondary">Add choice</button>
+    </div>
+  </div>
+</div>
+<!-- END Choice answers -->
+<!-- END question template -->
