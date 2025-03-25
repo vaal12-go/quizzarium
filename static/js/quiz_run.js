@@ -227,7 +227,8 @@ function collect_text_answer(question_id) {
 } //function collect_text_answer(question_id) {
 
 function collect_quiz_data() {
-  console.log("collect_quiz_data :>> ");
+  //   console.log("collect_quiz_data :>> ");
+  //   TODO: add completion date when saving quiz answered
   const answered_quiz = {
     quiz_id: quiz_to_complete.id,
     answered_questions: [],
@@ -239,8 +240,8 @@ function collect_quiz_data() {
 
   answered_quiz.answered_questions = quiz_to_complete.questions.reduce(
     (accum, curr_question) => {
-      console.log("curr_question.text :>> ", curr_question.question);
-      console.log("curr_question.type :>> ", curr_question.type);
+      //   console.log("curr_question.text :>> ", curr_question.question);
+      //   console.log("curr_question.type :>> ", curr_question.type);
 
       const answered_question = {
         question_id: curr_question.id,
@@ -298,7 +299,7 @@ function collect_quiz_data() {
     []
   ); //answered_quiz.answered_questions = quiz_to_complete.questions.reduce(
 
-  console_debug("quiz_run:301 answered_quiz::", answered_quiz);
+  //   console_debug("quiz_run:301 answered_quiz::", answered_quiz);
 
   return {
     answered_quiz: answered_quiz,
@@ -306,43 +307,107 @@ function collect_quiz_data() {
   };
 } //function collect_quiz_data() {
 
+const CONFIRM_Q_TEMPLATE = `
+  <div>
+    <span style="font-weight: bold;">{{question_text}}</span>
+    <div>
+      Answer(s): {{{answers_html}}}
+    </div
+  </div>
+`;
+
+function create_confirmation_html(questions_arr) {
+  console_debug("quiz_run:311 questions_arr::", questions_arr);
+  return questions_arr.reduce((accum, curr_question) => {
+    const answers_arr = curr_question.answers.reduce(
+      (answer_accum, curr_answer) => {
+        answer_accum.push(curr_answer.value);
+        return answer_accum;
+      },
+      []
+    );
+    const answers_html = answers_arr.join(", ");
+    accum += Mustache.render(CONFIRM_Q_TEMPLATE, {
+      question_text: curr_question.question_text,
+      answers_html: answers_html,
+    });
+    return accum;
+  }, "");
+}
+
+async function send_completed_quiz(quiz_collected) {
+  clearInterval(timer_interval);
+
+  const curr_moment = moment();
+  quiz_collected.answered_quiz.completion_seconds = curr_moment.diff(
+    start_moment,
+    "seconds"
+  );
+
+  console_debug(
+    "quiz_run:322 quiz_collected.completion_seconds::",
+    quiz_collected.completion_seconds
+  );
+
+  // console_debug("quiz_run:322 quiz_collected::", quiz_collected);
+
+  const send_url = `${BASE_URL}/api/answered-quizzes`;
+  // console_debug("quiz_run:323 send_url::", send_url);
+
+  const res_json = await (
+    await fetch(send_url, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+      body: JSON.stringify(quiz_collected.answered_quiz),
+    })
+  ).json();
+
+  console_debug("quiz_run:337 res_json of POSTING answer::", res_json);
+
+  if (res_json.status == "success") {
+    console.log("All is good :>> ");
+    show_message_next_page("Completed quiz was saved successfully");
+    window.location = `${BASE_URL}/index.html`;
+  }
+}
+
 async function save_quiz() {
-  console.log("Save quiz clicked :>> ");
   const quiz_collected = collect_quiz_data();
+  const confirm_html = create_confirmation_html(
+    quiz_collected.answered_quiz.answered_questions
+  );
+  console_debug("quiz_run:314 quiz_collected::", quiz_collected);
+
+  console_debug("quiz_run:345 confirm_html::", confirm_html);
+
   if (quiz_collected.validation_passed) {
-    console.log("Will send data to server :>> ");
-    clearInterval(timer_interval);
-
-    const curr_moment = moment();
-    quiz_collected.answered_quiz.completion_seconds = curr_moment.diff(
-      start_moment,
-      "seconds"
+    const options = {
+      title: "Send completed quiz?",
+      type: "primary",
+      btnOkText: "Yes",
+      btnCancelText: "No",
+      onConfirm: () => {
+        console.log("Confirmed!");
+        send_completed_quiz(quiz_collected);
+      },
+      onCancel: () => {
+        console.log("Cancelled!");
+      },
+    };
+    const {
+      el,
+      content,
+      options: confirmedOptions,
+    } = await bs5dialog.confirm(
+      `
+      <h6>Please review your answers and confirm test completion</h6>
+      ${confirm_html}
+      `,
+      options
     );
-
-    console_debug(
-      "quiz_run:322 quiz_collected.completion_seconds::",
-      quiz_collected.completion_seconds
-    );
-
-    console_debug("quiz_run:322 quiz_collected::", quiz_collected);
-
-    const send_url = `${BASE_URL}/api/answered-quizzes`;
-    console_debug("quiz_run:323 send_url::", send_url);
-
-    const res_json = await (
-      await fetch(send_url, {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-        body: JSON.stringify(quiz_collected.answered_quiz),
-      })
-    ).json();
-
-    console_debug("quiz_run:337 res_json of POSTING answer::", res_json);
   } else {
-    const alertBtn = document.getElementById("alertBtn");
-
     bs5dialog.alert(
       `Not all questions are answered. 
        <div>Cannot save quiz before every question is answered.</div>
@@ -353,9 +418,6 @@ async function save_quiz() {
         type: "danger",
         size: "md",
         btnOkText: "OK",
-        onOk: () => {
-          console.log("OK button clicked.");
-        },
         timeout: 0,
       }
     );
@@ -364,7 +426,7 @@ async function save_quiz() {
 
 var timer_interval = null;
 window.onload = async () => {
-  //   console.log("Hello :>> ");
+  initCommonGlobalState();
   timer_interval = setInterval(update_timer, 1000);
 
   const urlParams = new URL(window.location.toLocaleString()).searchParams;

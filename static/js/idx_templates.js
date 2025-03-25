@@ -15,7 +15,7 @@ const QUIZ_TEMPLATE_FLOATING = `
       </div>
 
       <div style="float: right; font-size: x-small; padding: 3px;">
-        Questions: {{quiz.questions_no}} | Completions: 3'
+        Questions: {{quiz.questions_no}} | Completions: {{quiz.completed_no}}
       </div>
       &nbsp;
     </div>

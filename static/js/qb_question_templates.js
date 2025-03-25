@@ -62,10 +62,14 @@ const QUESTION_ADD_TEMPLATE = `
 `;
 
 const CHOICE_ADD_TEMPLATE = `
+
+
 <div class="row ms-4 mb-1 align-items-center">
+    <!-- CHOICE DIV START -->
     <div class="col-9">
         <div class="input-group mb-1">
-            <span id="c_new-choice-number-span" class="input-group-text" id="basic-addon3">1</span>
+            <span id="c_new-choice-number-span" 
+                class="input-group-text" id="basic-addon3">1</span>
             <input
             type="text"
             class="form-control"
@@ -76,10 +80,15 @@ const CHOICE_ADD_TEMPLATE = `
     </div>
     {{#remove_btn_visible}}
         <div class="col-3">
-            <button type="button" class="btn btn-secondary">
-            Remove
+            <button 
+              type="button" 
+              class="btn btn-secondary"
+              onclick="remove_choice_button_handler(this)"
+              >
+              Remove
             </button>
         </div>
     {{/remove_btn_visible}}
+    <!-- CHOICE DIV END -->
 </div>
 `;

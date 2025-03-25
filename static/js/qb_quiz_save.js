@@ -48,7 +48,6 @@ async function save_quiz() {
     console_debug("qb_quiz_save:48 redirect_url::", redirect_url);
     window.location = redirect_url;
   }
-  // [x]: uncomment below for saving new quiz
 } //async function save_quiz() {
 
 function collect_question_choices(q_ui_id) {
@@ -56,12 +55,19 @@ function collect_question_choices(q_ui_id) {
   const choices_list_el = document.querySelector(selector);
 
   const choice_el_arr = [].slice.call(choices_list_el.children);
+  // console_debug("qb_quiz_save:59 choice_el_arr::", choice_el_arr);
   const choice_array = choice_el_arr.reduce((accum, curr_choice, curr_idx) => {
     // console_debug("qb_quiz_save:7 curr_choice::", curr_choice);
-    // console_debug("qb_quiz_save:8 curr_idx::", curr_idx);
-    const choice_inp = document.getElementById(
-      `q${q_ui_id}_c${curr_idx}-choice-text-inp`
+
+    const choice_inp = curr_choice.querySelector(
+      "div.row div.col-9 div.input-group input"
     );
+    console_debug("qb_quiz_save:63 inp_el::", choice_inp);
+
+    // console_debug("qb_quiz_save:8 curr_idx::", curr_idx);
+    // const choice_inp = document.getElementById(
+    //   `q${q_ui_id}_c${curr_idx}-choice-text-inp`
+    // );
     // console_debug("qb_quiz_save:12 choice_inp.value::", choice_inp.value);
     const choice_obj = {
       text: choice_inp.value,

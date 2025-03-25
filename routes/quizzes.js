@@ -88,7 +88,7 @@ function prepare_quiz_for_saving(quiz) {
     description: quiz.description,
     questions_json: JSON.stringify(q_arr),
     questions_no: questions_no,
-    completed_no: -1,
+    completed_no: 0,
     can_be_completed: can_be_completed,
     preflight_check_result: check_result,
   };

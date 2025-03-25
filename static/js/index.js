@@ -2,8 +2,7 @@ var start_quiz_no = 0;
 var limit = 9;
 
 window.onload = async () => {
-  console.log("Hello :>> ", BASE_URL);
-
+  initCommonGlobalState()
   await reload_quizzes();
   document
     .getElementById("sort-selector")
@@ -25,7 +24,7 @@ function get_sort_option() {
   const sort_option_selected = Number(
     sort_selector.options[sort_selector.selectedIndex].value
   );
-  console_debug("index:22 sort_option_selected::", sort_option_selected);
+  // console_debug("index:22 sort_option_selected::", sort_option_selected);
   switch (sort_option_selected) {
     case 2:
       sort_order = "desc";
@@ -37,8 +36,15 @@ function get_sort_option() {
       sort_by = "questions_no";
       sort_order = "desc";
       break;
+    case 5:
+      sort_by = "completed_no";
+      break;
+    case 6:
+      sort_by = "completed_no"
+      sort_order = "desc"
+      break
   }
-  console_debug("index:27 sort_order::", sort_order);
+  // console_debug("index:27 sort_order::", sort_order);
 
   return {
     sort_by: sort_by,
@@ -49,7 +55,7 @@ function get_sort_option() {
 function url_query_from_fields(obj_to_encode) {
   var ret_str = "";
   for (fld in obj_to_encode) {
-    console_debug("index:49 fld::", fld);
+    // console_debug("index:49 fld::", fld);
     ret_str += `&${fld}=${encodeURI(obj_to_encode[fld])}`;
   }
   return ret_str;
@@ -95,19 +101,9 @@ async function delete_item_click(itm) {
 }
 
 async function pagination_change(page_no) {
-  console_debug("index:96 page_no::", page_no);
-  // bs5dialog.alert("This is an alert message.", {
-  //   title: "Alert",
-  //   type: "warning",
-  //   size: "md",
-  //   btnOkText: "OK",
-  //   onOk: () => {
-  //     console.log("OK button clicked.");
-  //   },
-  //   timeout: 5000,
-  // });
+  // console_debug("index:96 page_no::", page_no);
   start_quiz_no = Math.floor((page_no - 1) * limit);
-  console_debug("index:100 new_start::", start_quiz_no);
+  // console_debug("index:100 new_start::", start_quiz_no);
   await reload_quizzes();
 }
 
@@ -118,10 +114,10 @@ function render_pagination(quizzes_json) {
   console.log("render_pagination :>> ");
   let total_pages = Math.floor(quizzes_json.total_count / limit);
   if (quizzes_json.total_count % limit > 0) total_pages++;
-  console_debug("index:100 total_pages::", total_pages);
+  // console_debug("index:100 total_pages::", total_pages);
 
   const current_page = Math.floor(start_quiz_no / limit) + 1;
-  console_debug("index:109 current_page::", current_page);
+  // console_debug("index:109 current_page::", current_page);
   let pagination_links = "";
   for (let i = 1; i <= total_pages; i++) {
     if (i == current_page) {
@@ -150,13 +146,3 @@ function render_quizzes(quizzes_json) {
 
   render_pagination(quizzes_json);
 }
-
-// const QUIZ_TEMPLATE = `
-//   <div class="border text-start">
-//     <h3>{{quiz.name}}</h3>
-//     {{quiz.description}}
-//     <a href="questionnaire_builder.html?id={{quiz.id}}">Edit</a>
-//     <a href="#" data-id="{{quiz.id}}" onclick="delete_item_click(this)">Delete</a>
-//     <a href="#">Run</a>
-//   </div>
-// `;

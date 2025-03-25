@@ -1,3 +1,14 @@
+function remove_question(evt) {
+  // TODO: implement removal of question
+  // console.log("remove_queston :>> ", evt);
+  // console.log("remove_queston :>> ", this);
+
+  const parent_li_el =
+    this.parentElement.parentElement.parentElement.parentElement;
+  // console_debug("qb_questions_management:7 parent_container::", parent_li_el);
+  parent_li_el.remove();
+} //function remove_question(evt) {
+
 function clear_choices_ui(question_ui_id) {
   const selector = `#q${question_ui_id}-choice-container ul`;
   const choices_list_el = document.querySelector(selector);
@@ -15,12 +26,6 @@ function collect_question_choices(q_ui_id) {
 
   const choice_el_arr = [].slice.call(choices_list_el.children);
   const choice_array = choice_el_arr.reduce((accum, curr_choice, curr_idx) => {
-    // console_debug("qb_quiz_save:7 curr_choice::", curr_choice);
-    // console_debug("qb_quiz_save:8 curr_idx::", curr_idx);
-    // const choice_inp = document.getElementById(
-    //   `q${q_ui_id}_c${curr_idx}-choice-text-inp`
-    // );
-    // console_debug("qb_quiz_save:12 choice_inp.value::", choice_inp.value);
     accum.push(choice_inp.value);
     return accum;
   }, []);
@@ -28,17 +33,25 @@ function collect_question_choices(q_ui_id) {
   return choice_array;
 }
 
+function remove_choice_button_handler(btn) {
+  console_debug(
+    "qb_questions_management:37 remove_choice_button_handler this::",
+    this
+  );
+  console_debug("qb_questions_management:41 evt::", btn);
+  const choice_parent = btn.parentElement.parentElement.parentElement;
+  console_debug("qb_questions_management:43 choice_parent::", choice_parent);
+  choice_parent.remove();
+}
+
 function add_choice_ui(question_ui_id, choice = null) {
-  console_debug("qb_questions_management:32 add_choice_ui::");
+  // console_debug("qb_questions_management:32 add_choice_ui::");
   const choice_container = document.getElementById(
     `q${question_ui_id}-choice-container`
   );
 
   const existing_choices = collect_question_choices(question_ui_id);
-  //   console_debug(
-  //     "qb_questions_management:41 existing_choices::",
-  //     existing_choices
-  //   );
+
   const curr_no_choices = existing_choices.length;
 
   choice_container.classList.remove("no-display");
@@ -77,26 +90,26 @@ function add_choice_ui(question_ui_id, choice = null) {
 }
 
 function question_type_changed() {
-  console.log("question_type_changed :>> ", this);
+  // console.log("question_type_changed :>> ", this);
   const selected_option = this.options[this.selectedIndex];
-  console_debug(
-    "questionnaire_builder:190 selected_option::",
-    selected_option.value
-  );
+  // console_debug(
+  //   "questionnaire_builder:190 selected_option::",
+  //   selected_option.value
+  // );
   const q_ui_id = this.dataset[QUESTION_ID_ATTR_NAME];
-  console_debug("questionnaire_builder:195 q_ui_id::", q_ui_id);
+  // console_debug("questionnaire_builder:195 q_ui_id::", q_ui_id);
 
   switch (Number(selected_option.value)) {
     case -1:
-      console.log("No option selected :>> ");
+      // console.log("No option selected :>> ");
       break;
     case 1:
-      console.log("Text option selected :>> ");
+      // console.log("Text option selected :>> ");
       clear_choices_ui(q_ui_id);
       break;
     case 2:
       // Single choice
-      console.log("Single choice selected :>> ");
+      // console.log("Single choice selected :>> ");
       const q_choices = collect_question_choices(q_ui_id);
       if (q_choices.length == 0) add_choice_ui(q_ui_id);
       break;
@@ -106,13 +119,13 @@ function question_type_changed() {
       const q_choices2 = collect_question_choices(q_ui_id);
       if (q_choices2.length == 0) add_choice_ui(q_ui_id);
       break;
-  }
-}
+  } //switch (Number(selected_option.value)) {
+} //function question_type_changed() {
 
 function add_choice_to_question() {
-  console_debug("qb_questions_management:71 add_choice_to_question::", this);
+  // console_debug("qb_questions_management:71 add_choice_to_question::", this);
   const q_ui_id = this.dataset[QUESTION_ID_ATTR_NAME];
-  console_debug("qb_questions_management:73 q_ui_id::", q_ui_id);
+  // console_debug("qb_questions_management:73 q_ui_id::", q_ui_id);
   add_choice_ui(q_ui_id);
 }
 

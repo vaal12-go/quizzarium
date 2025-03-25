@@ -1,0 +1,19 @@
+0.0 Set environment for image_name:
+    export IMG_NAME=eliftech_25mar2025
+
+0. Check container is running
+    docker container ls
+
+0.1 Stop container
+    docker stop "$IMG_NAME"_c1
+
+0.2 Remove old container    
+    docker container rm "$IMG_NAME"_c1
+
+
+1. # Build (to be run from root dir)
+   docker buildx build -t $IMG_NAME -f ./deploy/Dockerfile .
+
+
+2. # Run
+   docker run --name "$IMG_NAME"_c1 -d -p 3000:3000 $IMG_NAME
