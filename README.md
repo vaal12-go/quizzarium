@@ -3,6 +3,10 @@
 Express.js application to manage quizzes.
 
 
+## To run locally
+
+  node ./server/server.js
+
 ## Test deployment:
 [Deployment link](http://23.95.225.112:3000/)
 
