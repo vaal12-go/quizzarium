@@ -29,7 +29,7 @@ function check_show_message() {
 function initCommonGlobalState() {
   calculateBaseURL();
   const ver_el = document.getElementById("navbar_version_string");
-  console.log("ver_el :>> ", ver_el);
+  // console.log("ver_el :>> ", ver_el);
   if (!(ver_el === null)) {
     ver_el.innerHTML = VERSION_STR;
   }

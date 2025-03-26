@@ -1,61 +1,12 @@
 let start_moment = moment();
 let quiz_to_complete = null;
+var timer_interval = null;
 
 function update_timer() {
   const curr_moment = moment();
   const diff_seconds = curr_moment.diff(start_moment, "seconds");
-  //   console.log("diff :>> ", diff_seconds);
   document.getElementById("time-running-sec-span").innerHTML = diff_seconds;
 }
-
-const QUESTION_TEMPLATE = `
-<!-- Questions row -->
-    <div class="col-3 text-end">
-        <h5 id="{{question.id}}-question-title">{{question.question}}</h5>
-        {{q_type}}
-    </div>
-    <div class="col-8">
-        {{{input_template}}}
-    </div>
-<!-- END Questions row -->
-`;
-
-const TEXT_INPUT_TEMPLATE = `
-    <input
-        type="text"
-        class="form-control"
-        id="{{question.id}}-choice-text-inp"
-        placeholder="Enter answer here"
-    />
-`;
-
-const RADIO_INPUT_TEMPLATE = `
-
-    <div>
-    <input class="form-check-input" 
-                type="radio" 
-                name="{{question_id}}-radio-group" 
-                id="{{choice_id}}-choice-radio"
-    >
-    <label class="form-check-label" for="{{choice_id}}-choice-radio">
-        {{choice_text}}
-    </label>
-    </div>
-`;
-
-const CHECKBOX_INPUT_TEMPLATE = `
-
-    <div class="form-check">
-        <input class="form-check-input" 
-                type="checkbox" value="" 
-                id="{{choice_id}}-checkbox-inp">
-        <label 
-            class="form-check-label" 
-            for="{{choice_id}}-checkbox-inp"
-            id="{{choice_id}}-checkbox-label"
-        >{{choice_text}}</label>
-    </div>
-`;
 
 function render_questions(questions_arr) {
   console_debug("quiz_run:11 questions_arr::", questions_arr);
@@ -145,176 +96,6 @@ function unmark_question_red(q_id) {
     .classList.remove("red_text");
 }
 
-function collect_single_choice(question_obj) {
-  //   console_debug("quiz_run:146 question_obj::", question_obj);
-  const ret = {
-    validation_passed: true,
-    value: "",
-    value_id: "NO_ID_ERROR",
-  };
-
-  const selected_radio = document.querySelector(
-    `input[name="${question_obj.id}-radio-group"]:checked`
-  );
-  //   console_debug("quiz_run:139 selected_radio::", selected_radio);
-  if (selected_radio === null) {
-    mark_question_red(question_obj.id);
-    ret.validation_passed = false;
-  } else {
-    unmark_question_red(question_obj.id);
-
-    const el_id = selected_radio.id;
-    // console_debug("quiz_run:162 el_id::", el_id);
-    const choice_id = el_id.substring(0, el_id.length - "-choice-radio".length);
-    // console_debug("quiz_run:167 choice_id::", choice_id);
-    const selected_choice = question_obj.choices.filter((curr_choice) => {
-      return curr_choice.id == choice_id;
-    });
-    // console_debug("quiz_run:169 selected_choice::", selected_choice);
-    ret.value = selected_choice[0].text;
-    ret.value_id = selected_choice[0].id;
-  }
-  //   console_debug("quiz_run:172 ret::", ret);
-  return ret;
-} //function collect_single_choice(question_obj) {
-
-function collect_multi_choice(queston_obj) {
-  const ret = {
-    validation_passed: true,
-    values: [],
-  };
-
-  ret.values = queston_obj.choices.reduce((accum, curr_choice) => {
-    const checkbox_el = document.getElementById(
-      `${curr_choice.id}-checkbox-inp`
-    );
-    console_debug("quiz_run:193 checkbox_el::", checkbox_el);
-    console_debug("quiz_run:193 checkbox_el.checked::", checkbox_el.checked);
-    if (checkbox_el.checked) {
-      accum.push({
-        value: curr_choice.text,
-        value_id: curr_choice.id,
-      });
-    }
-    return accum;
-  }, []);
-
-  if (ret.values.length == 0) {
-    mark_question_red(queston_obj.id);
-    ret.validation_passed = false;
-  } else {
-    unmark_question_red(queston_obj.id);
-  }
-  console_debug("quiz_run:203 ret::", ret);
-
-  return ret;
-}
-
-function collect_text_answer(question_id) {
-  const ret = {
-    validation_passed: true,
-    value: "",
-  };
-  ret.value = document.getElementById(`${question_id}-choice-text-inp`).value;
-  if (ret.value.trim() == "") {
-    mark_question_red(question_id);
-    ret.validation_passed = false;
-  } else {
-    unmark_question_red(question_id);
-  }
-  return ret;
-} //function collect_text_answer(question_id) {
-
-function collect_quiz_data() {
-  //   console.log("collect_quiz_data :>> ");
-  //   TODO: add completion date when saving quiz answered
-  const answered_quiz = {
-    quiz_id: quiz_to_complete.id,
-    answered_questions: [],
-    completion_seconds: -1,
-    date_completed: -1,
-  };
-
-  var validation_passed = true;
-
-  answered_quiz.answered_questions = quiz_to_complete.questions.reduce(
-    (accum, curr_question) => {
-      //   console.log("curr_question.text :>> ", curr_question.question);
-      //   console.log("curr_question.type :>> ", curr_question.type);
-
-      const answered_question = {
-        question_id: curr_question.id,
-        question_text: curr_question.question,
-        question_type: curr_question.type,
-        answers: [],
-      };
-
-      var collected_answer = null;
-      //   TODO: refactor so validation and putting collected value happens after switch (returned object have to be unform)
-      switch (curr_question.type) {
-        case 1:
-          // Text
-          collected_answer = collect_text_answer(curr_question.id);
-          answered_question.answers.push({
-            value: collected_answer.value,
-          });
-          validation_passed =
-            collected_answer.validation_passed == false
-              ? collected_answer.validation_passed
-              : validation_passed;
-          break;
-
-        case 2:
-          //Single choice
-          collected_answer = collect_single_choice(curr_question);
-          answered_question.answers.push({
-            value: collected_answer.value,
-            value_id: collected_answer.value_id,
-          });
-          validation_passed =
-            collected_answer.validation_passed == false
-              ? collected_answer.validation_passed
-              : validation_passed;
-
-          break;
-
-        case 3:
-          // Multiple choice - checkboxes
-          collected_answer = collect_multi_choice(curr_question);
-
-          validation_passed =
-            collected_answer.validation_passed == false
-              ? collected_answer.validation_passed
-              : validation_passed;
-
-          answered_question.answers.push(...collected_answer.values);
-          break;
-      } //switch (curr_question.type) {
-
-      //   console_debug("quiz_run:161 answered_question::", answered_question);
-      accum.push(answered_question);
-      return accum;
-    }, //(accum, curr_question) => {
-    []
-  ); //answered_quiz.answered_questions = quiz_to_complete.questions.reduce(
-
-  //   console_debug("quiz_run:301 answered_quiz::", answered_quiz);
-
-  return {
-    answered_quiz: answered_quiz,
-    validation_passed: validation_passed,
-  };
-} //function collect_quiz_data() {
-
-const CONFIRM_Q_TEMPLATE = `
-  <div>
-    <span style="font-weight: bold;">{{question_text}}</span>
-    <div>
-      Answer(s): {{{answers_html}}}
-    </div
-  </div>
-`;
-
 function create_confirmation_html(questions_arr) {
   console_debug("quiz_run:311 questions_arr::", questions_arr);
   return questions_arr.reduce((accum, curr_question) => {
@@ -332,44 +113,6 @@ function create_confirmation_html(questions_arr) {
     });
     return accum;
   }, "");
-}
-
-async function send_completed_quiz(quiz_collected) {
-  clearInterval(timer_interval);
-
-  const curr_moment = moment();
-  quiz_collected.answered_quiz.completion_seconds = curr_moment.diff(
-    start_moment,
-    "seconds"
-  );
-
-  console_debug(
-    "quiz_run:322 quiz_collected.completion_seconds::",
-    quiz_collected.completion_seconds
-  );
-
-  // console_debug("quiz_run:322 quiz_collected::", quiz_collected);
-
-  const send_url = `${BASE_URL}/api/answered-quizzes`;
-  // console_debug("quiz_run:323 send_url::", send_url);
-
-  const res_json = await (
-    await fetch(send_url, {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-      body: JSON.stringify(quiz_collected.answered_quiz),
-    })
-  ).json();
-
-  console_debug("quiz_run:337 res_json of POSTING answer::", res_json);
-
-  if (res_json.status == "success") {
-    console.log("All is good :>> ");
-    show_message_next_page("Completed quiz was saved successfully");
-    window.location = `${BASE_URL}/index.html`;
-  }
 }
 
 async function save_quiz() {
@@ -423,7 +166,6 @@ async function save_quiz() {
   }
 }
 
-var timer_interval = null;
 window.onload = async () => {
   initCommonGlobalState();
 
@@ -432,11 +174,16 @@ window.onload = async () => {
     session_save_data_available()
   );
 
-  timer_interval = setInterval(update_timer, 1000);
-
   if (session_save_data_available()) {
     const additional_data = restore_session_data("quiz_container");
     console_debug("quiz_run:439 additional_data::", additional_data);
+    console_debug("quiz_run:440 start_moment::", start_moment);
+    console_debug(
+      "quiz_run:440 additional_data.start_moment::",
+      additional_data.start_moment
+    );
+    start_moment = moment(additional_data.start_moment);
+    console_debug("quiz_run:440 start_moment 2::", start_moment);
   } else {
     const urlParams = new URL(window.location.toLocaleString()).searchParams;
     const quiz_id = urlParams.get("id");
@@ -452,4 +199,6 @@ window.onload = async () => {
   document
     .getElementById("save-quiz-button")
     .addEventListener("click", save_quiz);
+
+  timer_interval = setInterval(update_timer, 1000);
 };

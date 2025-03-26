@@ -44,7 +44,7 @@ function save_to_session_actual() {
   };
   const root_el = document.getElementById(root_el_id);
   obj_2save.page_html = new XMLSerializer().serializeToString(root_el);
-  console_debug("page_reload_preservation:11 xml::", obj_2save.page_html);
+  //   console_debug("page_reload_preservation:11 xml::", obj_2save.page_html);
 
   sessionStorage.setItem(PAGE_SESSION_KEY, JSON.stringify(obj_2save));
 }
@@ -108,4 +108,6 @@ function save_page_to_sesssion(root_node, additional_object_to_save) {
         break;
     }
   });
-}
+
+  save_to_session_actual();
+} //function save_page_to_sesssion(root_node, additional_object_to_save) {
