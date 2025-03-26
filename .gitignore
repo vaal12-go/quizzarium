@@ -2,3 +2,5 @@ node_modules/**/*
 example.sqlite3
 ET-school Questionnaire Builder App (test task).pdf
 run_server.bat
+credentials/local_vm.cred
+credentials/nsiv.bid.cred

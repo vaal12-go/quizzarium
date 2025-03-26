@@ -1,0 +1,60 @@
+# Commands: https://winscp.net/eng/docs/scripting#commands
+
+#Options help:https://winscp.net/eng/docs/scriptcommand_option
+# option echo on
+
+option batch off
+
+# credential files are in credentials directory
+open sftp://%HOST% -username=%USER% -password=%PASS%
+
+echo
+echo 
+echo -------  Synchronizing files  --------
+
+call mkdir %BASE_DIR%/%DIR_DATE% -p
+cd %BASE_DIR%/%DIR_DATE%
+
+echo REMOTE DIR:
+pwd
+
+call mkdir deploy -p
+synchronize remote ../deploy ./deploy -delete
+
+call mkdir routes -p
+synchronize remote ../routes ./routes -delete
+
+call mkdir server -p
+synchronize remote ../server ./server -delete
+
+call mkdir static -p
+synchronize remote ../static ./static -delete
+
+put ..\package.json 
+put ..\package-lock.json 
+
+call export IMG_NAME=eliftech_26mar2025
+echo
+echo
+echo ********* Managing docker image ***********
+echo 
+echo RUNNING containers:
+call docker container ls
+echo stopping container:
+call echo $IMG_NAME
+call docker stop "$IMG_NAME"_c1
+echo CONTAINER STOPPED
+
+call docker container rm "$IMG_NAME"_c1
+call docker buildx build -t $IMG_NAME -f ./deploy/Dockerfile .
+
+call docker run --name "$IMG_NAME"_c1 -d -p 3000:3000 $IMG_NAME
+
+exit
+
+
+#RUN options (from /deploy directory). Environment vars need to be set before this run
+#       winscp.com sftp://%HOST% /username=%USER% /password=%PASS%
+#       winscp.com sftp://%HOST% /username=%USER% /password=%PASS% /script=win_scp_batch.wscp
+
+#       winscp.com /script=win_scp_batch.wscp
