@@ -1,4 +1,5 @@
 let start_moment = moment();
+let quiz_to_complete = null;
 
 function update_timer() {
   const curr_moment = moment();
@@ -6,8 +7,6 @@ function update_timer() {
   //   console.log("diff :>> ", diff_seconds);
   document.getElementById("time-running-sec-span").innerHTML = diff_seconds;
 }
-
-let quiz_to_complete = null;
 
 const QUESTION_TEMPLATE = `
 <!-- Questions row -->
@@ -427,13 +426,28 @@ async function save_quiz() {
 var timer_interval = null;
 window.onload = async () => {
   initCommonGlobalState();
+
+  console_debug(
+    "quiz_run:430 session_save_data_available()::",
+    session_save_data_available()
+  );
+
   timer_interval = setInterval(update_timer, 1000);
 
-  const urlParams = new URL(window.location.toLocaleString()).searchParams;
-  const quiz_id = urlParams.get("id");
-  //   console.log("quiz_id :>> ", quiz_id);
+  if (session_save_data_available()) {
+    const additional_data = restore_session_data("quiz_container");
+    console_debug("quiz_run:439 additional_data::", additional_data);
+  } else {
+    const urlParams = new URL(window.location.toLocaleString()).searchParams;
+    const quiz_id = urlParams.get("id");
+    //   console.log("quiz_id :>> ", quiz_id);
 
-  await load_quiz(quiz_id);
+    await load_quiz(quiz_id);
+  }
+  save_page_to_sesssion("quiz_container", {
+    quiz_to_complete: quiz_to_complete,
+    start_moment: start_moment,
+  });
 
   document
     .getElementById("save-quiz-button")

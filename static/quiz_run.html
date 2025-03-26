@@ -33,6 +33,7 @@
 
     <script src="/js/mustache_4.2.0.js"></script>
 
+    <script src="./js/page_reload_preservation.js"></script>
     <script src="/js/common.js"></script>
     <script src="/js/quiz_run.js"></script>
 
@@ -98,30 +99,34 @@
     <!-- NAVIGATION END -->
 
     <!-- MAIN container -->
-    <div class="container text-center">
-      <div class="row">
-        <div class="col">
-          <h1 id="quiz_name_holder">Quiz to be completed</h1>
-          <span id="quiz_description_holder"></span>
-        </div>
-      </div>
+    <div id="parent_of_main_container">
+      <div id="main_container" class="container text-center">
+        <div id="quiz_container">
+          <div class="row">
+            <div class="col">
+              <h1 id="quiz_name_holder">Quiz to be completed</h1>
+              <span id="quiz_description_holder"></span>
+            </div>
+          </div>
 
-      <!-- Questions holder container -->
-      <div class="row">
-        <div id="questions-holder" class="col"></div>
-      </div>
-      <!-- END  Questions holder container -->
-
-      <!-- Buttons row -->
-      <div class="row text-center">
-        <div class="col-3 m-3">
-          <button type="button" class="btn btn-primary" id="save-quiz-button">
-            Save
-          </button>
+          <!-- Questions holder container -->
+          <div class="row">
+            <div id="questions-holder" class="col"></div>
+          </div>
+          <!-- END  Questions holder container -->
         </div>
+
+        <!-- Buttons row -->
+        <div class="row text-center">
+          <div class="col-3 m-3">
+            <button type="button" class="btn btn-primary" id="save-quiz-button">
+              Save
+            </button>
+          </div>
+        </div>
+        <!-- ENDButtons row -->
       </div>
-      <!-- ENDButtons row -->
+      <!-- END MAIN container -->
     </div>
-    <!-- END MAIN container -->
   </body>
 </html>
