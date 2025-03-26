@@ -9,6 +9,7 @@ Express.js application to manage quizzes.
 
 ## Test deployment:
 [Deployment link](http://23.95.225.112:3000/)
+Deployment script (win_scp) in deploy folder.
 
 ## Following requirements were implemented
 
@@ -44,8 +45,8 @@ on the “Run” action.
 questions, amount of completions.
 * Questionnaire builder page: add “drag and drop” functionality to allow user to
 re-order questions/answers by dragging them;
-* NOT DONE: Interactive questionnaire page: save intermediate completion state so that when the
-user refreshes the page he can continue from where he left.
+* Interactive questionnaire page: save intermediate completion state so that when the
+user refreshes the page he can continue from where he left. - UPDATE of 26Mar2025 - intermediate state of page is saved in browser's session (on the client), so during reload of the page data is restored.
 
 ### Advanced level
     
