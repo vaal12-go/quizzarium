@@ -22,7 +22,7 @@ async function get_number_of_completed_quizzes(quiz_id) {
 router.post("/answered-quizzes", async (req, res) => {
   console.log("Answered quizzes hit :>> ");
   const received_quiz = req.body;
-  console_debug("answered_quiz:8 answered_quiz::", received_quiz);
+  // console_debug("answered_quiz:8 answered_quiz::", received_quiz);
 
   const inserted_quiz = await answered_quiz.query().insert({
     quiz_id: received_quiz.quiz_id,
@@ -30,12 +30,12 @@ router.post("/answered-quizzes", async (req, res) => {
     completion_time_sec: received_quiz.completion_seconds,
   });
 
-  console_debug("answered_quizes:16 inserted_quiz::", inserted_quiz);
+  // console_debug("answered_quizes:16 inserted_quiz::", inserted_quiz);
 
   const no_of_completed = await get_number_of_completed_quizzes(
     inserted_quiz.quiz_id
   );
-  console_debug("answered_quizes:41 no_of_completed::", no_of_completed);
+  // console_debug("answered_quizes:41 no_of_completed::", no_of_completed);
 
   const update_query = await quiz
     .query()
@@ -44,7 +44,7 @@ router.post("/answered-quizzes", async (req, res) => {
       completed_no: no_of_completed,
     });
 
-  console_debug("answered_quizes:44 update_query::", update_query);
+  // console_debug("answered_quizes:44 update_query::", update_query);
   // TODO: check for number of returned updated rows. If different from 1 - return error
 
   res.json({

@@ -120,9 +120,9 @@ async function save_quiz() {
   const confirm_html = create_confirmation_html(
     quiz_collected.answered_quiz.answered_questions
   );
-  console_debug("quiz_run:314 quiz_collected::", quiz_collected);
+  // console_debug("quiz_run:314 quiz_collected::", quiz_collected);
 
-  console_debug("quiz_run:345 confirm_html::", confirm_html);
+  // console_debug("quiz_run:345 confirm_html::", confirm_html);
 
   if (quiz_collected.validation_passed) {
     const options = {
@@ -176,14 +176,17 @@ window.onload = async () => {
 
   if (session_save_data_available()) {
     const additional_data = restore_session_data("quiz_container");
-    console_debug("quiz_run:439 additional_data::", additional_data);
-    console_debug("quiz_run:440 start_moment::", start_moment);
-    console_debug(
-      "quiz_run:440 additional_data.start_moment::",
-      additional_data.start_moment
-    );
+    // console_debug("quiz_run:439 additional_data::", additional_data);
+    // console_debug("quiz_run:440 start_moment::", start_moment);
+    // console_debug(
+    //   "quiz_run:440 additional_data.start_moment::",
+    //   additional_data.start_moment
+    // );
     start_moment = moment(additional_data.start_moment);
-    console_debug("quiz_run:440 start_moment 2::", start_moment);
+    // console_debug("quiz_run:440 start_moment 2::", start_moment);
+
+    quiz_to_complete = additional_data.quiz_to_complete;
+    // console_debug("quiz_run:189 quiz_to_complete::", quiz_to_complete);
   } else {
     const urlParams = new URL(window.location.toLocaleString()).searchParams;
     const quiz_id = urlParams.get("id");

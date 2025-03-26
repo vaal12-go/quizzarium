@@ -8,7 +8,7 @@ function restore_session_data(root_el) {
   if (sess_data_str === null) return null;
 
   const session_obj = JSON.parse(sess_data_str);
-  console_debug("page_reload_preservation:12 session_obj::", session_obj);
+  //   console_debug("page_reload_preservation:12 session_obj::", session_obj);
 
   const root_element = document.getElementById(root_el);
   root_element.innerHTML = session_obj.page_html;
@@ -19,10 +19,10 @@ function restore_session_data(root_el) {
     switch (curr_input.type) {
       case "text":
         curr_input.value = curr_input.dataset[DATASET_SAVEVAL_KEY];
-        console_debug(
-          "page_reload_preservation:22 curr_input.dataset[DATASET_SAVEVAL_KEY]::",
-          curr_input.dataset[DATASET_SAVEVAL_KEY]
-        );
+        // console_debug(
+        //   "page_reload_preservation:22 curr_input.dataset[DATASET_SAVEVAL_KEY]::",
+        //   curr_input.dataset[DATASET_SAVEVAL_KEY]
+        // );
         break;
       case "radio":
         curr_input.checked = curr_input.dataset[DATASET_SAVEVAL_KEY] == "true";
@@ -58,8 +58,8 @@ function session_save_data_available() {
 }
 
 function on_change_handler(evt) {
-  console_debug("qb_quiz_save:119 on_change_handler evt::", evt);
-  console_debug("qb_quiz_save:119 on_change_handler evt::", evt.target);
+  //   console_debug("qb_quiz_save:119 on_change_handler evt::", evt);
+  //   console_debug("qb_quiz_save:119 on_change_handler evt::", evt.target);
   const curr_input = evt.target;
   switch (curr_input.type) {
     case "text":
@@ -73,7 +73,7 @@ function on_change_handler(evt) {
       break;
   }
 
-  console_debug("page_reload_preservation:32 curr_input::", curr_input);
+  //   console_debug("page_reload_preservation:32 curr_input::", curr_input);
 
   save_to_session_actual();
 }
@@ -84,16 +84,16 @@ function save_page_to_sesssion(root_node, additional_object_to_save) {
 
   const root_el = document.getElementById(root_el_id);
   const inp_els = root_el.querySelectorAll("input");
-  console_debug("page_reload_preservation:18 inp_els::", inp_els);
+  //   console_debug("page_reload_preservation:18 inp_els::", inp_els);
   const inp_els_arr = [].slice.call(inp_els);
-  console_debug("page_reload_preservation:19 inp_els_arr::", inp_els_arr);
+  //   console_debug("page_reload_preservation:19 inp_els_arr::", inp_els_arr);
   inp_els_arr.forEach((curr_input) => {
     curr_input.removeEventListener("change", on_change_handler);
     curr_input.addEventListener("change", on_change_handler);
-    console_debug(
-      "page_reload_preservation:23 curr_input.type::",
-      curr_input.type
-    );
+    // console_debug(
+    //   "page_reload_preservation:23 curr_input.type::",
+    //   curr_input.type
+    // );
     switch (curr_input.type) {
       case "text":
         curr_input.removeEventListener("keyup", on_change_handler);

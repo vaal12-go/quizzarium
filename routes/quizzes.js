@@ -7,7 +7,7 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/quizzes", async (req, res) => {
-  console.log("api/quizzes :>> ", req.query);
+  // console.log("api/quizzes :>> ", req.query);
 
   const start = Number(req.query.start);
   const limit = Number(req.query.limit);
@@ -96,7 +96,7 @@ function prepare_quiz_for_saving(quiz) {
 }
 
 router.post("/quizzes", async (req, res) => {
-  console.log("Quizzes POST hit :>> ", req.body);
+  // console.log("Quizzes POST hit :>> ", req.body);
   let quiz_2_insert = req.body;
 
   // Because this is new quiz will need to insert without questions to get quizid
